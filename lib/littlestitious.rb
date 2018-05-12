@@ -166,10 +166,8 @@ module Littlestitious
     false
   end
 
-  def includes_non_printing_characters?( skip_line_feed: true,
-                                         skip_carriage_return: false )
+  def includes_non_printing_characters?
     self.class.non_printing_chars.each do | char_type, char |
-      next if skip_line_feed && ( char_type == :line_feed )
       return true if self.include? char
     end
 
