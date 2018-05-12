@@ -1,6 +1,9 @@
 Gem::Specification.new do |s|
   s.name         = "littlestitious"
-  s.version      = "0.0.3"
+
+  # Remember to update both README and git tag
+  s.version      = "0.0.4"
+
   s.date         = "2018-05-12"
   s.summary      = "String analyzer for fingerprinting and stenography"
   s.description  = "Sometimes we all get a littlestitious of our strings"

@@ -4,4 +4,4 @@ Let's find some sneaky chars.
 
 ## Current Version
 
-0.0.2
+0.0.4
