@@ -1,3 +1,4 @@
+# coding: utf-8
 module Littlestitious
 
   def self.included(base)
@@ -68,6 +69,14 @@ module Littlestitious
         ideographic_space:         "\u3000"
       }
 
+      # At some point work these into a newline fingerprint
+      # detector—it's harder than it looks because systems
+      # are inconsistent.
+      @new_line_chars = {
+        line_feed:       "\u000a",
+        carriage_return: "\u000d"
+      }
+
       @non_printing_chars = {
         null:                 "\u0000",
         start_of_heading:     "\u0001",
@@ -79,10 +88,10 @@ module Littlestitious
         bell_alert:           "\u0007",
         backspace:            "\u0008",
         character_tabulation: "\u0009",
-        line_feed:            "\u000a",
+
         line_tabulation:      "\u000b",
         form_feed:            "\u000c",
-        carriage_return:      "\u000d",
+
         shift_out:            "\u000e",
         shift_in:             "\u000f",
         data_link_escape:     "\u0010",
@@ -157,6 +166,16 @@ module Littlestitious
     false
   end
 
+  def includes_non_printing_characters?( skip_line_feed: true,
+                                         skip_carriage_return: false )
+    self.class.non_printing_chars.each do | char_type, char |
+      next if skip_line_feed && ( char_type == :line_feed )
+      return true if self.include? char
+    end
+
+    false
+  end
+
   def strange_character_count
 
     char_count = Hash.new(0)
@@ -168,6 +187,12 @@ module Littlestitious
     end
 
     char_count
+
   end
+  alias_method :count_strange_characters, :strange_character_count
+  alias_method :count_strange_chars,      :strange_character_count
+  alias_method :count_strange,            :strange_character_count
+  alias_method :strange_count,            :strange_character_count
+  alias_method :strange_char_count,       :strange_character_count
 
 end
