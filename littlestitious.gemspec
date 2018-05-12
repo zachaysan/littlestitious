@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name         = "littlestitious"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.date         = "2018-05-12"
   s.summary      = "String analyzer for fingerprinting and stenography"
   s.description  = "Sometimes we all get a littlestitious of our strings"
@@ -8,6 +8,6 @@ Gem::Specification.new do |s|
   s.email        = "zachaysan@gmail.com"
   s.files        = ["lib/littlestitious.rb"]
   s.require_path = "lib"
-  s.homepage     = "https://rubygems.org/gems/littlestitious"
+  s.homepage     = "https://github.com/zachaysan/littlestitious"
   s.license      = "MIT"
 end
