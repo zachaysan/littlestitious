@@ -46,9 +46,55 @@ describe Littlestitious do
 
     end.flatten
 
+    @new_line_chars = {
+      :line_feed=>"\n",
+      :carriage_return=>"\r",
+    }
+
+    @non_printing_strings = \
+    { :null=>"\u0000",
+      :start_of_heading=>"\u0001",
+      :start_of_text=>"\u0002",
+      :end_of_text=>"\u0003",
+      :end_of_transmission=>"\u0004",
+      :enquiry=>"\u0005",
+      :acknowledge=>"\u0006",
+      :bell_alert=>"\a",
+      :backspace=>"\b",
+      :character_tabulation=>"\t",
+
+      :line_tabulation=>"\v",
+      :form_feed=>"\f",
+
+      :shift_out=>"\u000E",
+      :shift_in=>"\u000F",
+      :data_link_escape=>"\u0010",
+      :device_control_1=>"\u0011",
+      :device_control_2=>"\u0012",
+      :device_control_3=>"\u0013",
+      :device_control_4=>"\u0014",
+      :negative_acknowledge=>"\u0015",
+      :synchronous_idle=>"\u0016",
+      :end_of_trans_block=>"\u0017",
+      :cancel=>"\u0018",
+      :end_of_medium=>"\u0019",
+      :substitute=>"\u001A",
+      :escape=>"\e",
+      :file_separator=>"\u001C",
+      :group_separator=>"\u001D",
+      :record_separator=>"\u001E",
+      :unit_separator=>"\u001F",
+      :reverse_line_feed=>"\u008D",
+      :cancel_character=>"\u0094" }
+      .map do | char_type, char |
+
+      suspicious_strings.map { |string| string.gsub "CHAR", char }
+
+    end.flatten
+
     @normal_strings = \
     [ "Someone did something suspicious but it wasn't me.",
-      "lol\nlook\r\nelsewhere" ]
+      "lol\nlookr\nelsewhere!!" ]
 
     @marked_up_string = "Something‌isn't ‌right here\t✓"
   end
@@ -72,6 +118,8 @@ describe Littlestitious do
       @normal_strings.map do | string |
         better_string = BetterString.new string
         better_string.includes_zero_width_characters?.must_equal false
+        better_string.includes_weird_spaces?.must_equal false
+        better_string.includes_non_printing_characters?.must_equal false
       end
     end
 
@@ -79,6 +127,13 @@ describe Littlestitious do
       @weird_space_strings.map do | string |
         better_string = BetterString.new string
         better_string.includes_weird_spaces?.must_equal true
+      end
+    end
+
+    it "reports non printing chars in strings" do
+      @non_printing_strings.map do | string |
+        better_string = BetterString.new string
+        better_string.includes_non_printing_characters?.must_equal true
       end
     end
 
