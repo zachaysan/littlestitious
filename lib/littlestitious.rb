@@ -138,7 +138,7 @@ module Littlestitious
       @all_chars.map { |k, v| @char_lookup[v] = k }
 
       size_ok = @char_lookup.size == @all_chars.size
-      message = "Mismatched charater mapping"
+      message = "Mismatched charater mapping".freeze
       raise AssertionError, message unless size_ok
 
       class_instance_vars = \
@@ -151,6 +151,8 @@ module Littlestitious
   end
 
   def includes_zero_width_characters?
+    return false if self.boring?
+
     self.class.zero_width_chars.each do | char_type, char |
       return true if self.include? char
     end
@@ -159,6 +161,8 @@ module Littlestitious
   end
 
   def includes_weird_spaces?
+    return false if self.boring?
+
     self.class.weird_space_chars.each do | char_type, char |
       return true if self.include? char
     end
@@ -167,6 +171,8 @@ module Littlestitious
   end
 
   def includes_non_printing_characters?
+    return false if self.boring?
+
     self.class.non_printing_chars.each do | char_type, char |
       return true if self.include? char
     end
@@ -174,9 +180,21 @@ module Littlestitious
     false
   end
 
+  def boring?
+    # Matches ascii character 10 and 32 to 126
+    # (newline + space + all visible)
+    regex_string = '[^\n -~]'.freeze
+
+    @boring_regex ||= Regexp.new regex_string
+
+    @boring_regex.match(self).nil?
+  end
+
   def strange_character_count
 
     char_count = Hash.new(0)
+
+    return char_count if self.boring?
 
     self.each_char do |char|
       char_type = self.class.char_lookup[char]
