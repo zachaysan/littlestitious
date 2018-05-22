@@ -147,6 +147,13 @@ describe Littlestitious do
       count.must_equal expected_count
     end
 
+    it "can tell which strings are boring" do
+      @normal_strings.map do | string |
+        better_string = BetterString.new string
+        better_string.boring?.must_equal true
+      end
+    end
+
   end
 
   describe "when used directly as a String" do
@@ -182,6 +189,12 @@ describe Littlestitious do
                          character_tabulation: 1,
                          checkmark: 1 }
       count.must_equal expected_count
+    end
+
+    it "can tell which strings are boring" do
+      @normal_strings.map do | string |
+        string.boring?.must_equal true
+      end
     end
 
   end
