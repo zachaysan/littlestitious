@@ -183,7 +183,7 @@ module Littlestitious
   def boring?
     # Matches ascii character 10 and 32 to 126
     # (newline + space + all visible)
-    regex_string = '[^\n -~]'.freeze
+    regex_string = '[^\n -~]'
 
     @boring_regex ||= Regexp.new regex_string
 
@@ -210,5 +210,13 @@ module Littlestitious
   alias_method :count_strange,            :strange_character_count
   alias_method :strange_count,            :strange_character_count
   alias_method :strange_char_count,       :strange_character_count
+
+end
+
+# TODO: Make littlestitious inclusion into string optional
+
+class String
+
+  include Littlestitious
 
 end
